@@ -11,7 +11,7 @@ export default class CheckboxParent {
       this.rootElement
         .getAttribute('aria-controls')
         ?.split(' ')
-        .map(id => document.getElementById(id) as HTMLInputElement)
+        .map((id) => document.getElementById(id) as HTMLInputElement)
         .filter(Boolean) || [];
     if (!this.childElements.length) return;
     this.eventController = new AbortController();
@@ -24,22 +24,22 @@ export default class CheckboxParent {
   private initialize(): void {
     const { signal } = this.eventController;
     this.rootElement.addEventListener('change', this.handleRootChange, { signal });
-    this.childElements.forEach(child => child.addEventListener('change', this.handleChildChange, { signal }));
+    this.childElements.forEach((child) => child.addEventListener('change', this.handleChildChange, { signal }));
     this.update();
     this.rootElement.setAttribute('data-checkbox-parent-initialized', '');
   }
 
   private update(): void {
-    const checked = this.childElements.every(child => child.checked);
+    const checked = this.childElements.every((child) => child.checked);
     Object.assign(this.rootElement, {
       checked: checked,
-      indeterminate: !checked && this.childElements.some(child => child.checked),
+      indeterminate: !checked && this.childElements.some((child) => child.checked),
     });
   }
 
   private handleRootChange(): void {
     const checked = this.rootElement.checked;
-    this.childElements.forEach(child => {
+    this.childElements.forEach((child) => {
       child.checked = checked;
     });
   }
