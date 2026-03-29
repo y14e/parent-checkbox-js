@@ -1,10 +1,10 @@
-# checkbox-parent.js
+# parent-checkbox.js
 WAI-ARIA compliant [checkbox](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/) (mixed-state) pattern implementation in JS.
 ## Installation
 ```js
-import CheckboxParent from './checkbox-parent.js';
+import ParentCheckbox from './parent-checkbox.js';
 
-const myCheckboxParent = new CheckboxParent(...);
+const myParentCheckbox = new ParentCheckbox(...);
 ```
 ## Demo
-https://y14e.github.io/checkbox-parent-js/
+https://y14e.github.io/parent-checkbox-js/
