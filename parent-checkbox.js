@@ -1,17 +1,12 @@
-export default class CheckboxParent {
-  private rootElement!: HTMLInputElement;
-  private childElements!: HTMLInputElement[];
-  private controller!: AbortController;
-  private destroyed!: boolean;
-
-  constructor(root: HTMLInputElement) {
+export default class ParentCheckbox {
+  constructor(root) {
     if (!root) return;
     this.rootElement = root;
     this.childElements =
       this.rootElement
         .getAttribute('aria-controls')
         ?.split(' ')
-        .map((id) => document.getElementById(id) as HTMLInputElement)
+        .map((id) => document.getElementById(id))
         .filter(Boolean) || [];
     if (!this.childElements.length) return;
     this.controller = new AbortController();
@@ -21,35 +16,35 @@ export default class CheckboxParent {
     this.initialize();
   }
 
-  private initialize(): void {
+  initialize() {
     const { signal } = this.controller;
     this.rootElement.addEventListener('change', this.handleRootChange, { signal });
     this.childElements.forEach((child) => void child.addEventListener('change', this.handleChildChange, { signal }));
     this.update();
-    this.rootElement.setAttribute('data-checkbox-parent-initialized', '');
+    this.rootElement.setAttribute('data-parent-checkbox-initialized', '');
   }
 
-  private update(): void {
+  update() {
     const checked = this.childElements.every((child) => child.checked);
     this.rootElement.checked = checked;
     this.rootElement.indeterminate = !checked && this.childElements.some((child) => child.checked);
   }
 
-  private handleRootChange(): void {
+  handleRootChange() {
     const { checked } = this.rootElement;
     this.childElements.forEach((child) => {
       child.checked = checked;
     });
   }
 
-  private handleChildChange(): void {
+  handleChildChange() {
     this.update();
   }
 
-  destroy(): void {
+  destroy() {
     if (this.destroyed) return;
     this.destroyed = true;
-    this.rootElement.removeAttribute('data-checkbox-parent-initialized');
+    this.rootElement.removeAttribute('data-parent-checkbox-initialized');
     this.controller.abort();
   }
 }
