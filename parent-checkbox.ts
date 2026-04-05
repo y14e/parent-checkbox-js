@@ -16,15 +16,34 @@ export default class ParentCheckbox {
     this.initialize();
   }
 
+  destroy(): void {
+    if (this.destroyed) return;
+    this.destroyed = true;
+    this.controller.abort();
+    this.rootElement.removeAttribute('data-parent-checkbox-initialized');
+  }
+
   private initialize(): void {
     const { signal } = this.controller;
-    this.rootElement.addEventListener('change', this.handleRootChange.bind(this), { signal });
+    this.rootElement.addEventListener('change', this.handleRootChange, { signal });
     for (const child of this.childElements) {
-      child.addEventListener('change', this.handleChildChange.bind(this), { signal });
+      child.addEventListener('change', this.handleChildChange, { signal });
     }
     this.update();
     this.rootElement.setAttribute('data-parent-checkbox-initialized', '');
   }
+
+  private handleRootChange = (): void => {
+    const { checked } = this.rootElement;
+    this.rootElement.indeterminate = false;
+    for (const child of this.childElements) {
+      child.checked = checked;
+    }
+  };
+
+  private handleChildChange = (): void => {
+    this.update();
+  };
 
   private update(): void {
     let count = 0;
@@ -36,24 +55,5 @@ export default class ParentCheckbox {
     const every = count === this.childElements.length;
     this.rootElement.checked = every;
     this.rootElement.indeterminate = !every && count > 0;
-  }
-
-  private handleRootChange(): void {
-    const { checked } = this.rootElement;
-    this.rootElement.indeterminate = false;
-    for (const child of this.childElements) {
-      child.checked = checked;
-    }
-  }
-
-  private handleChildChange(): void {
-    this.update();
-  }
-
-  destroy(): void {
-    if (this.destroyed) return;
-    this.destroyed = true;
-    this.controller.abort();
-    this.rootElement.removeAttribute('data-parent-checkbox-initialized');
   }
 }
