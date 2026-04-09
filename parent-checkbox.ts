@@ -5,20 +5,32 @@ export default class ParentCheckbox {
   private destroyed = false;
 
   constructor(root: HTMLInputElement) {
-    if (!root) throw new Error('Root element missing');
+    if (!root) {
+      throw new Error('Root element missing');
+    }
     this.rootElement = root;
     const ids = this.rootElement.getAttribute('aria-controls')?.trim() ?? '';
-    if (!ids) console.warn('aria-controls attribute missing');
+    if (!ids) {
+      console.warn('aria-controls attribute missing');
+    }
     this.childElements = ids
       .split(/\s+/)
-      .map((id) => document.getElementById(id))
-      .filter((elements): elements is HTMLInputElement => elements instanceof HTMLInputElement);
-    if (this.childElements.length === 0) console.warn('Child elements missing');
+      .map((id) => {
+        return document.getElementById(id);
+      })
+      .filter((elements): elements is HTMLInputElement => {
+        return elements instanceof HTMLInputElement;
+      });
+    if (this.childElements.length === 0) {
+      console.warn('Child elements missing');
+    }
     this.initialize();
   }
 
   destroy(): void {
-    if (this.destroyed) return;
+    if (this.destroyed) {
+      return;
+    }
     this.destroyed = true;
     this.eventController.abort();
     this.rootElement.removeAttribute('data-parent-checkbox-initialized');
