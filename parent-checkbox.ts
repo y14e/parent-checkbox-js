@@ -10,7 +10,6 @@ export default class ParentCheckbox {
     }
 
     this.#rootElement = rootElement;
-
     const ids = rootElement.getAttribute('aria-controls')?.trim() ?? '';
 
     if (ids === '') {
@@ -27,7 +26,6 @@ export default class ParentCheckbox {
     }
 
     this.#childElements = children;
-
     this.#initialize();
   }
 
@@ -35,12 +33,9 @@ export default class ParentCheckbox {
     if (this.#destroyed) return;
 
     this.#destroyed = true;
-
     this.#controller?.abort();
     this.#controller = null;
-
     this.#rootElement.removeAttribute('data-parent-checkbox-initialized');
-
     this.#childElements = null;
   }
 
@@ -48,7 +43,6 @@ export default class ParentCheckbox {
     if (!this.#childElements || !this.#controller) return;
 
     const { signal } = this.#controller;
-
     this.#rootElement.addEventListener('change', this.#onRootChange, { signal });
 
     for (const child of this.#childElements) {
@@ -56,7 +50,6 @@ export default class ParentCheckbox {
     }
 
     this.#update();
-
     this.#rootElement.setAttribute('data-parent-checkbox-initialized', '');
   }
 
@@ -70,7 +63,6 @@ export default class ParentCheckbox {
     }
 
     const all = count === this.#childElements.length;
-
     this.#rootElement.checked = all;
     this.#rootElement.indeterminate = !all && count > 0;
   }
@@ -79,7 +71,6 @@ export default class ParentCheckbox {
     if (!this.#childElements) return;
 
     this.#rootElement.indeterminate = false;
-
     const checked = this.#rootElement.checked;
 
     for (const child of this.#childElements) {
