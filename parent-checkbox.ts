@@ -5,25 +5,19 @@ export default class ParentCheckbox {
   #destroyed = false;
 
   constructor(rootElement: HTMLInputElement) {
-    if (!rootElement) {
-      throw new Error('RootElement element missing.');
-    }
+    if (!rootElement) throw new Error('RootElement element missing.');
 
     this.#rootElement = rootElement;
     const ids = rootElement.getAttribute('aria-controls')?.trim() ?? '';
 
-    if (ids === '') {
-      console.warn('Child element IDs missing.');
-    }
+    if (ids === '') console.warn('Child element IDs missing.');
 
     const children = ids
       .split(/\s+/)
       .map((id) => document.getElementById(id))
       .filter((element): element is HTMLInputElement => element instanceof HTMLInputElement);
 
-    if (children.length === 0) {
-      console.warn('Child elements missing.');
-    }
+    if (children.length === 0) console.warn('Child elements missing.');
 
     this.#childElements = children;
     this.#initialize();
@@ -78,7 +72,5 @@ export default class ParentCheckbox {
     }
   };
 
-  #onChildChange = (): void => {
-    this.#update();
-  };
+  #onChildChange = (): void => this.#update();
 }
