@@ -51,9 +51,7 @@ export default class ParentCheckbox {
     }
 
     const { signal } = this.#controller;
-    this.#rootElement.addEventListener('change', this.#onRootChange, {
-      signal,
-    });
+    this.#rootElement.addEventListener('change', this.#onRootChange, { signal });
     for (const child of this.#childElements) {
       child.addEventListener('change', this.#onChildChange, { signal });
     }
