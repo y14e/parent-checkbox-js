@@ -2,7 +2,7 @@ export default class ParentCheckbox {
   #rootElement: HTMLInputElement;
   #childElements: HTMLInputElement[] | null;
   #controller: AbortController | null = new AbortController();
-  #destroyed = false;
+  #isDestroyed = false;
 
   constructor(root: HTMLInputElement) {
     if (!root) {
@@ -34,11 +34,11 @@ export default class ParentCheckbox {
   }
 
   destroy(): void {
-    if (this.#destroyed) {
+    if (this.#isDestroyed) {
       return;
     }
 
-    this.#destroyed = true;
+    this.#isDestroyed = true;
     this.#controller?.abort();
     this.#controller = null;
     this.#rootElement.removeAttribute('data-parent-checkbox-initialized');
@@ -74,9 +74,9 @@ export default class ParentCheckbox {
       }
     }
 
-    const all = count === this.#childElements.length;
-    this.#rootElement.checked = all;
-    this.#rootElement.indeterminate = !all && count > 0;
+    const isAllChecked = count === this.#childElements.length;
+    this.#rootElement.checked = isAllChecked;
+    this.#rootElement.indeterminate = !isAllChecked && count > 0;
   }
 
   #onRootChange = (): void => {
@@ -85,10 +85,10 @@ export default class ParentCheckbox {
     }
 
     this.#rootElement.indeterminate = false;
-    const checked = this.#rootElement.checked;
+    const isChecked = this.#rootElement.checked;
 
     for (const child of this.#childElements) {
-      child.checked = checked;
+      child.checked = isChecked;
     }
   };
 
