@@ -15,7 +15,7 @@ new ParentCheckbox(root);
 
 ## 📦 API
 
-### destroy
+### `destroy`
 
 Destroys the instance and cleans up all event listeners.
 
