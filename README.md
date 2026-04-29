@@ -7,7 +7,10 @@ WAI-ARIA compliant [checkbox](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/
 ```ts
 import ParentCheckbox from './parent-checkbox';
 
-const myParentCheckbox = new ParentCheckbox();
+new ParentCheckbox(root);
+// => ParentCheckbox
+//
+// root: HTMLElement
 ```
 
 ## Demo
