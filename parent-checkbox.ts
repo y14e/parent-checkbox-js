@@ -5,7 +5,7 @@ export default class ParentCheckbox {
   #isDestroyed = false;
 
   constructor(root: HTMLInputElement) {
-    if (!root) {
+    if (!(root instanceof HTMLInputElement)) {
       throw new Error('Root element missing');
     }
 
