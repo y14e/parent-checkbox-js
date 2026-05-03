@@ -1,3 +1,17 @@
+/**
+ * parent-checkbox.ts
+ *
+ * @version 1.0.0
+ * @author Yusuke Kamiyamane
+ * @license MIT
+ * @copyright Copyright (c) 2026 Yusuke Kamiyamane
+ * @see {@link https://github.com/y14e/parent-checkbox-ts}
+ */
+
+// -----------------------------------------------------------------------------
+// [APIs]
+// -----------------------------------------------------------------------------
+
 export default class ParentCheckbox {
   #rootElement: HTMLInputElement;
   #childElements: HTMLInputElement[] | null;
@@ -46,7 +60,9 @@ export default class ParentCheckbox {
     }
 
     const { signal } = this.#controller;
-    this.#rootElement.addEventListener('change', this.#onRootChange, { signal });
+    this.#rootElement.addEventListener('change', this.#onRootChange, {
+      signal,
+    });
 
     this.#childElements?.forEach((child) => {
       child.addEventListener('change', this.#onChildChange, { signal });
@@ -63,7 +79,8 @@ export default class ParentCheckbox {
 
     const isAllChecked = this.#childElements.every((child) => child.checked);
     this.#rootElement.checked = isAllChecked;
-    this.#rootElement.indeterminate = !isAllChecked && this.#childElements.some((child) => child.checked);
+    this.#rootElement.indeterminate =
+      !isAllChecked && this.#childElements.some((child) => child.checked);
   }
 
   #onRootChange = () => {
