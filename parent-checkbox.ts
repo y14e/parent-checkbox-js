@@ -55,7 +55,11 @@ export default class ParentCheckbox {
   }
 
   #initialize() {
-    const { signal } = this.#controller!;
+    if (!this.#controller) {
+      throw new Error('Unreachable');
+    }
+
+    const { signal } = this.#controller;
     this.#rootElement.addEventListener('change', this.#onRootChange, {
       signal,
     });
