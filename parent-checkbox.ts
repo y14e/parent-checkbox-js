@@ -73,14 +73,12 @@ export default class ParentCheckbox {
   }
 
   #update() {
-    if (!this.#childElements) {
-      throw new Error('Unreachable');
-    }
-
-    const isAllChecked = this.#childElements.every((child) => child.checked);
+    const isAllChecked =
+      this.#childElements?.every((child) => child.checked) ?? false;
     this.#rootElement.checked = isAllChecked;
     this.#rootElement.indeterminate =
-      !isAllChecked && this.#childElements.some((child) => child.checked);
+      !isAllChecked &&
+      (this.#childElements?.some((child) => child.checked) ?? false);
   }
 
   #onRootChange = () => {
