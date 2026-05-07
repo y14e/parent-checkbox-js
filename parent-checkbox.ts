@@ -55,7 +55,7 @@ export default class ParentCheckbox {
   }
 
   #initialize() {
-    const { signal } = this.#controller as AbortController;
+    const { signal } = this.#controller!;
     this.#rootElement.addEventListener('change', this.#onRootChange, {
       signal,
     });
