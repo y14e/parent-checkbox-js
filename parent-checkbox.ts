@@ -1,7 +1,7 @@
 /**
  * parent-checkbox.ts
  *
- * @version 1.0.2
+ * @version 1.0.3
  * @author Yusuke Kamiyamane
  * @license MIT
  * @copyright Copyright (c) Yusuke Kamiyamane
@@ -14,7 +14,7 @@
 
 export default class ParentCheckbox {
   #rootElement: HTMLInputElement;
-  #childElements: HTMLInputElement[] | null;
+  #childElements: HTMLInputElement[];
   #controller: AbortController | null = new AbortController();
   #isDestroyed = false;
 
@@ -50,8 +50,8 @@ export default class ParentCheckbox {
     this.#isDestroyed = true;
     this.#controller?.abort();
     this.#controller = null;
+    this.#childElements.length = 0;
     this.#rootElement.removeAttribute('data-parent-checkbox-initialized');
-    this.#childElements = null;
   }
 
   #initialize() {
@@ -64,7 +64,7 @@ export default class ParentCheckbox {
       signal,
     });
 
-    this.#childElements?.forEach((child) => {
+    this.#childElements.forEach((child) => {
       child.addEventListener('change', this.#onChildChange, { signal });
     });
 
@@ -73,19 +73,17 @@ export default class ParentCheckbox {
   }
 
   #update() {
-    const isAllChecked =
-      this.#childElements?.every((child) => child.checked) ?? false;
+    const isAllChecked = this.#childElements.every((child) => child.checked);
     this.#rootElement.checked = isAllChecked;
     this.#rootElement.indeterminate =
-      !isAllChecked &&
-      (this.#childElements?.some((child) => child.checked) ?? false);
+      !isAllChecked && this.#childElements.some((child) => child.checked);
   }
 
   #onRootChange = () => {
     this.#rootElement.indeterminate = false;
     const isChecked = this.#rootElement.checked;
 
-    this.#childElements?.forEach((child) => {
+    this.#childElements.forEach((child) => {
       child.checked = isChecked;
     });
   };
