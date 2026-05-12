@@ -10,7 +10,7 @@ import ParentCheckbox from './parent-checkbox';
 new ParentCheckbox(root);
 // => ParentCheckbox
 //
-// root: HTMLElement
+// root: HTMLInputElement
 ```
 
 ## 📦 APIs
