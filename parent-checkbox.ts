@@ -1,7 +1,7 @@
 /**
  * parent-checkbox.ts
  *
- * @version 1.0.6
+ * @version 1.0.7
  * @author Yusuke Kamiyamane
  * @license MIT
  * @copyright Copyright (c) Yusuke Kamiyamane
@@ -13,14 +13,19 @@
 // -----------------------------------------------------------------------------
 
 export default class ParentCheckbox {
-  #rootElement: HTMLInputElement;
-  #childElements: HTMLInputElement[];
+  #rootElement!: HTMLInputElement;
+  #childElements!: HTMLInputElement[];
   #controller: AbortController | null = null;
   #isDestroyed = false;
 
   constructor(root: HTMLInputElement) {
     if (!(root instanceof HTMLInputElement)) {
       throw new TypeError('Invalid root element');
+    }
+
+    if (root.hasAttribute('data-parent-checkbox-initialized')) {
+      console.warn('Already initialized');
+      return;
     }
 
     this.#rootElement = root;
